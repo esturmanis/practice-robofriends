@@ -3,11 +3,12 @@ import CardList from '../components/CardList';
 
 import SearchBox from '../components/SearchBox'; 
 import Scroll from '../components/Scroll';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // https://jsonplaceholder.typicode.com/users
 class App extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             robots: [],
             searchfield: ''
@@ -30,7 +31,7 @@ class App extends Component {
         const filteredRobots = robots.filter(robot => {
             return robot.name.toLowerCase().includes(searchfield.toLowerCase());
         });
-        if(robots.length == 0) {
+        if(robots.length === 0) {
             return <h1>Loading</h1>
         } else {
             return (
@@ -38,7 +39,9 @@ class App extends Component {
                     <h1>RoboFriends</h1>
                     <SearchBox searchChange={this.onSearchChange}/>
                     <Scroll>
-                        <CardList robots={filteredRobots}/>
+                        <ErrorBoundary>
+                            <CardList robots={filteredRobots}/>
+                        </ErrorBoundary>
                     </Scroll>
                 </div>        
             );
