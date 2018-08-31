@@ -4,17 +4,25 @@ import { robots } from './robots';
 
 import SearchBox from './SearchBox'; 
 
+// https://jsonplaceholder.typicode.com/users
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            robots: robots,
+            robots: [],
             searchfield: ''
         }
     }
 
     onSearchChange = (event) => {
         this.setState({ searchfield: event.target.value });
+    }
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(users => this.setState({ robots: users }))
+            .catch(error => console.error(error));
     }
 
     render() {
